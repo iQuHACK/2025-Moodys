@@ -1,70 +1,20 @@
-# iQuHACK 2025 - Moody's Challenge
+# iQuHACK 2025 - Moody's Challenge : Our Solution
 
-Here you will learn the details that are needed in order to access and operate resources for this challenge. See **moodys_challenge** to read the challenge. Make sure to first read the instructions below.
+We chose our team name to be Icarus knowing well enough that choosing this challenge without any prior exposure to topology was us literally being "Icarus". But the challenge problem seemed so interesting that we had to atleast try and thus, we tried our best, learnt topological structures, understood different quantum algorithms and also brainstormed ideas of how we could replace quantum phase estimation with Algorithmic Shadow Spectroscopy and found ways of doing transforming a Laplacian matrix to a unitary matrix using different techniques. 
 
-## Working on qBraid
-[<img src="https://qbraid-static.s3.amazonaws.com/logos/Launch_on_qBraid_white.png" width="150">](https://account.qbraid.com?gitHubUrl=https://github.com/iQuHACK/2025-Moodys.git)
+First, we computed a point cloud by embedding the provided time series data. We used Taken's embedding method. 
 
-While simulations and emulations of your program can be done locally on your computer, the Moody's challenge will require access to qBraid for quantum hardware. 
+We constructed simplicial complex and had a simplex tree made to determine our boundary operators. Using the boundary operators, we calculated a Laplician matrix. 
 
-So here are some guidelines:
-1. To launch these materials on qBraid, first fork this repository and click the above `Launch on qBraid` button. It will take you to your qBraid Lab with the repository cloned.
-2. Once cloned, open terminal (click **FILES** in the left sidebar, then click the blue button with a symbol "➕", it is the first icon in the **Other** column in Launcher) and `cd` into this repo. Set the repo's remote origin using the git clone url you copied in Step 1, and then create a new branch for your team:
+After that, we used the Quantum Phase Estimation to calculate the betti numbers of our simplicial complex, which we were supposed to compute with the help of varying epsilon, which is our resolution threshold to determine how the betti numbers change over a certain proximity and the threshold. 
 
-```bash
-cd  2025-Moodys
-git remote set-url origin <url>
-git branch <team_name>
-git checkout <team_name>
+We then moved to the actual dataset for the computation of part 2 and 3. The protocols which were working for test dataset didn't work for the actual data set we were supposed to analyze to detect market crash. So, we moved to understanding why this was happening. 
 
-```
+Bonus questions: 
 
-3. <img align="right" width="43%" src="./assets/Screenshot 2025-01-30 at 22.17.47.png">Use the environment manager (**ENVS** tab in the right sidebar) to [install environment](https://docs.qbraid.com/cli/user-guide/environments) "Moody's IQuHACK 2025". The installation should take ~2 min.
-4. Once the installation is complete, go back to the Launcher to [add a new ipykernel](https://docs.qbraid.com/lab/user-guide/kernels) for "Moody's".
-5. From the **FILES** tab in the left sidebar, double-click on the `2024_Moodys` directory.
-6. You are now ready to begin hacking, [submitting jobs](https://docs.qbraid.com/lab/user-guide/quantum-jobs)! Work with your team to complete the challenge listed above.
+2. We studied the Variational Quantum Eigensolver Algorithm and also the Algorithmic Shadow Spectroscopy in order to replace the Quantum Phase Estimation part for the above-mentioned protocol because QPE is primarily theoretical, and we found interesting insights about them. 
 
-Please note, you will be provisioned credits before the hackathon for quantum hardwares. The following resources are provided in this challenge:
+3. The two ways we found for transforming the Laplacian matrix to a unitary matrix was:
+- Transforming the Laplacian into a Hamiltonian operator by a linear combination of tensor products of the Pauli operators. 
+- Using the Laplacian normalization equation and finding D^-1/2 L D^-1/2 where D is the matrix representing he degrees of our simplicial complex and L is the Laplacian matrix.
 
-* IonQ Aria 1 Noisy Quantum Simulator (no time limit, [qiskit syntax](#Syntax-of-using-IonQ-simulator-on-qiskit-circuit), [other syntax](https://docs.qbraid.com/sdk/user-guide/providers/ionq))
-* IBM hardware (10 minutes, [syntax](https://docs.qbraid.com/sdk/user-guide/providers/ibm))
-
-**Strategize carefully and conduct back of the envelope estimates for your experiments before running**.
-
-For other questions or additional help using qBraid, see [Lab User Guide](https://docs.qbraid.com/projects/lab/en/latest/lab/overview.html), or reach out on the IQuHack qBraid Slack Channel.
-
-## Before submission
-
-Make sure that you devote some time to prepare a brief presentation (3-7 mins) showing your work. This presentation will be presented on Sunday.
-
-We encourage you to show your experimental results, and your innovative solutions.
-
-## Syntax of using IonQ simulator on qiskit circuit
-
-Qiskit circuit is used as an example here.
-
-```python
-from qbraid.programs import load_program
-from qbraid.runtime import QbraidProvider
-from qbraid.transpiler.conversions.qiskit import qiskit_to_ionq
-
-provider = QbraidProvider()
-
-device = provider.get_device("ionq_simulator")
-
-ionq_dict = qiskit_to_ionq(circuit, gateset="native")
-
-program = load_program(ionq_dict)
-
-run_input = program.serialize()
-
-job = device.submit(run_input, shots=100, noise_model="aria-1")
-```
-
-## Scoring Criteria
-
-The scoring criteria are as follows:
-
-- **55%** is based on the main quantum TDA workflow (steps 1~4).
-- **40%** is allocated to creativity and innovation, evaluated through the work on one of challenge from the BONUS section.
-- **5%** is assigned to presentation quality.
